@@ -1,0 +1,82 @@
+
+      //Doubly Linked List 
+      /Merge Two Sorted Linked list */ 
+        #include<iostream>
+        using namespace std;
+        
+        class node{
+          public:
+            int data;
+            node* next;
+            node* prev;
+            node(int val){
+              data = val;
+              next = NULL;
+              prev = NULL;
+            }
+        };
+        
+        void InsertAtHead(node* &head, int val){
+          node* n = new node(val);
+          n->next = head;
+          if(head!=NULL){
+            head->prev=n;
+          }
+          head= n;
+        }
+        void InsertAtTail(node* head, int val){
+          if(head == NULL){
+            InsertAtHead(head,val);
+            return;
+          }
+          node* n= new node(val);
+          node* temp = head;
+          while(temp->next!=NULL){
+            temp=temp->next;
+          }
+          temp-> next =n;
+          n-> prev = temp;
+        }
+        
+        void display(node* head){
+          node* temp=head;
+          while(temp!=NULL){
+            cout<<temp->data<<" ";
+            temp= temp->next;
+          }
+          cout<<"NULL"<<endl;
+        }
+   
+        node* mergeReverse(node* &head1, node* head2){
+          if(head1 == NULL){
+            return head2;
+          }
+          if(head2 == NULL){
+            return head1;
+          }
+          node* result;
+          if(head1->data < head2->data){
+            result = head1;
+            result-> next = mergeReverse(head1->next,head2);
+          }
+          else{
+            result = head2;
+            result->next = mergeReverse(head1, head2->next);
+          }
+          return result;
+        }
+        
+      int main(){
+        node* head1 = NULL;
+        node* head2 = NULL;
+        int arr[]={1,2,3,4,5,6};
+        for(int i=0; i<6; i++){
+          InsertAtHead(head1,arr[i]);
+        }
+        InsertAtTail(head2,7);
+        InsertAtTail(head2,9);
+       
+       node* newhead = mergeReverse(head1, head2);
+       display(newhead);
+        return 0;
+      } 
